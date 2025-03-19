@@ -85,39 +85,103 @@ Access real-time insights across all your Plane data. Visualize trends, remove b
 
 ## 🛠️ Local development
 
-### Pre-requisites
-- Ensure Docker Engine is installed and running.
+Here’s the modified content with separate sections for macOS and Windows to keep the instructions distinct and clear:
 
-###  Development setup
-Setting up your local environment is simple and straightforward. Follow these steps to get started:
+---
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/makeplane/plane.git
-   ```
-2. Navigate to the project folder:
-   ```
-   cd plane
-   ```
-3. Create a new branch for your feature or fix:
-   ```
-   git checkout -b <feature-branch-name>
-   ```
-4. Run the setup script in the terminal:
-   ```
-   ./setup.sh
-   ```
-5. Open the project in an IDE such as VS Code.
+### Development Setup
 
-6. Review the `.env` files in the relevant folders. Refer to [Environment Setup](./ENV_SETUP.md) for details on the environment variables used.
+Setting up your local environment for Plane is simple and straightforward. Follow the steps below based on your operating system.
 
-7. Start the services using Docker:
-   ```
-   docker compose -f docker-compose-local.yml up -d
-   ```
+#### Clone the Repository (Common Step)
+Clone the Plane repository to your local machine:
+```bash
+git clone https://github.com/makeplane/plane.git
+cd plane
+```
 
-That’s it! You’re all set to begin coding. Remember to refresh your browser if changes don’t auto-reload. Happy contributing! 🎉
+#### Create a New Branch (Common Step)
+Create a branch for your feature or fix:
+```bash
+git checkout -b <feature-branch-name>
+```
 
+---
+
+### macOS Setup
+
+#### Step 1: Run the Setup Script
+Run the provided setup script in your terminal:
+```bash
+./setup.sh localhost
+```
+
+#### Step 2: Start the Services with Docker
+Launch the Plane services using Docker Compose:
+```bash
+docker-compose up
+```
+*Note*: Ensure Docker is installed (e.g., via `brew install docker` with Homebrew) and running. The `-d` flag runs containers in detached mode.
+
+#### Step 4: Open the Project
+Open the project in your IDE (e.g., VS Code) and start coding. Refresh your browser if changes don’t auto-reload.
+
+---
+
+### Windows Setup
+
+#### Step 1: Run the Setup Script
+Run the setup script in your terminal (Git Bash or WSL recommended):
+```bash
+./setup.sh localhost
+```
+*Note*: If the script doesn’t work directly, use Git Bash or WSL to execute it.
+
+#### Step 2: Configure Environment Variables
+1. Convert all `.env.example` files to `.env` in the following folders: `apiserver`, `live`, `web`, `space`, `admin`, and the root `plane` folder. You can do this manually or use PowerShell.
+  
+2. Generate a secret key and add it to `apiserver/.env`:
+   - In Git Bash:
+     ```bash
+     echo -e "\nSECRET_KEY=\"$(tr -dc 'a-z0-9' < /dev/urandom | head -c50)\"" >> ./apiserver/.env
+     ```
+   - Or in PowerShell:
+     ```powershell
+     $randomKey = -join ((97..122) + (48..57) | Get-Random -Count 50 | % {[char]$_})
+     Add-Content -Path ./apiserver/.env -Value "SECRET_KEY=`"$randomKey`""
+     ```
+   - Ensure the `SECRET_KEY=""` variable exists in `apiserver/.env` with the generated value.
+
+#### Step 3: Start the Services with Docker
+Launch the Plane services using Docker Compose:
+```bash
+docker compose -f docker-compose-local.yml up -d
+```
+*Note*: Ensure Docker Desktop is installed and running. The `-d` flag runs containers in detached mode.
+
+#### Step 4: Open the Project
+Open the project in your IDE (e.g., VS Code) and start coding. Refresh your browser if changes don’t auto-reload.
+
+---
+
+### Alternative: Run Plane from DockerHub (macOS/Windows)
+If you prefer using the pre-built Docker image from DockerHub, run:
+```bash
+docker run -e NEXT_PUBLIC_API_BASE_URL="http://localhost"
+```
+This starts the Plane server on port 80.
+
+---
+
+### Final Notes
+- **macOS**: Commands are optimized for a Unix-like environment. Install Docker if not already present.
+- **Windows**: Use Git Bash or WSL for Unix-style commands, or adapt with PowerShell as shown.
+
+You’re all set to begin coding. Happy development!
+
+---
+
+This keeps macOS and Windows instructions separate for clarity while maintaining a consistent structure. Let me know if you need further adjustments!
 ## ⚙️ Built with
 [![Next JS](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green)](https://www.djangoproject.com/)
